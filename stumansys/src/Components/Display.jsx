@@ -10,7 +10,7 @@ const Display = () => {
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const itemsPerPage = 15;
 
   const getAllUsers = async () => {
     try {
@@ -24,7 +24,7 @@ const Display = () => {
 
   const closeModal = () => {
     setIsModalOpen(false);
-    getAllUsers();
+    getAllUsers(); 
   };
 
   const handleSearch = (e) => {
@@ -38,9 +38,7 @@ const Display = () => {
   const handleDelete = async (id) => {
     try {
       await axios.delete(`http://localhost:3001/students/${id}`);
-      const updatedUsers = users.filter(user => user.id !== id);
-      setUsers(updatedUsers);
-      setFilterUsers(updatedUsers);
+      getAllUsers(); 
     } catch (error) {
       console.error('There was an error deleting the student:', error);
     }
@@ -64,10 +62,8 @@ const Display = () => {
     try {
       if (userData.id) {
         await axios.patch(`http://localhost:3001/students/${userData.id}`, userData);
-        console.log("User data updated:", userData);
       } else {
         await axios.post("http://localhost:3001/students", userData);
-        console.log("New user data added:", userData);
       }
       closeModal();
       setUserData({ id: "", name: "", age: "", grade: "", subjects: "" });
@@ -75,11 +71,11 @@ const Display = () => {
       console.error('There was an error submitting the data:', error);
     }
   };
-
   const handleUpdate = (user) => {
     setUserData(user);
     setIsModalOpen(true);
   };
+  
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -117,6 +113,7 @@ const Display = () => {
       <table>
         <thead>
           <tr>
+            <th>S.No</th>
             <th>Id</th>
             <th>Name</th>
             <th>Age</th>
@@ -127,12 +124,13 @@ const Display = () => {
         </thead>
         <tbody>
           {currentUsers.map((user, index) => (
-            <tr key={index}>
-              <td>{index + 1}</td>
+            <tr key={user.id}> 
+              <td>{indexOfFirstItem + index + 1}</td>
+              <td>{user.id}</td>
               <td>{user.name}</td>
               <td>{user.age}</td>
               <td>{user.grade}</td>
-              <td>{user.subjects}</td>
+              <td>{user.subjects}</td> 
               <td>
                 <button onClick={() => handleUpdate(user)}>Edit</button>
                 <button onClick={() => handleDelete(user.id)}>Delete</button>
@@ -146,7 +144,7 @@ const Display = () => {
         <div className='modal'>
           <div className='modal-content'>
             <span className='close' onClick={closeModal}>&times;</span>
-            <h1>Student Record</h1>
+            <h1>User Record</h1>
             <form onSubmit={handleSubmit}>
               <div className="form-group">
                 <label htmlFor="name">Name</label>

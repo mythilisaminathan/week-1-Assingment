@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const students = require("./sample.json"); 
+const students = require("./sample.json");
 const fs = require("fs");
 
 const port = 3001;
@@ -14,7 +14,7 @@ app.get("/students", (req, res) => {
     try {
         res.json(students);
     } catch (error) {
-        console.error("Error serving students data:", error); 
+        console.error("Error serving students data:", error);
     }
 });
 
@@ -43,17 +43,24 @@ app.post("/students", (req, res) => {
 
 // PATCH method 
 app.patch("/students/:id", (req, res) => {
-    const id = Number(req.params.id); 
+    const id = Number(req.params.id);
     const { name, age, grade, subjects } = req.body;
     if (!name || !age || !grade || !subjects) {
         return res.status(400).json({ message: "All fields are required" });
-    } 
+    }
+
     const index = students.findIndex((student) => student.id === id);
-    students[index] = { id, name, age, grade, subjects };
-    fs.writeFile('./sample.json', JSON.stringify(students), (err) => {
-        res.json({ message: "User Details updated successfully" });
-    });
+    if (index !== -1) {
+        students[index] = { id, name, age, grade, subjects };
+        fs.writeFile('./sample.json', JSON.stringify(students), (err) => {
+
+            res.json({ message: "User Details updated successfully" });
+        });
+    } else {
+        res.status(404).json({ message: "Student not found" });
+    }
 });
+
 
 app.listen(port, () => {
     console.log("Server is running on port", port);
