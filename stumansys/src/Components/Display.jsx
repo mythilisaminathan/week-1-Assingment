@@ -146,7 +146,7 @@ const Display = () => {
         <div className='modal'>
           <div className='modal-content'>
             <span className='close' onClick={closeModal}>&times;</span>
-            <h1>User Record</h1>
+            <h1>Student Record</h1>
             <form onSubmit={handleSubmit}>
               <div className="form-group">
                 <label htmlFor="name">Name</label>

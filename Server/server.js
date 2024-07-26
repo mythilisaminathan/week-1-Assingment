@@ -9,7 +9,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-// GET method to fetch all students
+// GET method 
 app.get("/students", (req, res) => {
     try {
         res.json(students);
@@ -18,7 +18,7 @@ app.get("/students", (req, res) => {
     }
 });
 
-// DELETE method to delete a student by ID
+// DELETE method 
 app.delete("/students/:id", (req, res) => {
     const id = Number(req.params.id);
     const filteredStudents = students.filter((student) => student.id !== id);
@@ -28,7 +28,7 @@ app.delete("/students/:id", (req, res) => {
     });
 });
 
-// POST method to add a new student
+// POST method 
 app.post("/students", (req, res) => {
     const { name, age, grade, subjects } = req.body;
     if (!name || !age || !grade || !subjects) {
@@ -41,7 +41,7 @@ app.post("/students", (req, res) => {
     });
 });
 
-// PATCH method to update a student by ID
+// PATCH method 
 app.patch("/students/:id", (req, res) => {
     const id = Number(req.params.id); 
     const { name, age, grade, subjects } = req.body;
